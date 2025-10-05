@@ -1,0 +1,21 @@
+# --- Framework Web & Server ---
+Flask==3.0.3
+Flask-Cors==4.0.1
+waitress==3.0.0
+requests==2.31.0
+
+# --- AI & Large Language Model (Gemini & LangChain) ---
+google-generativeai==0.7.0
+langchain==0.2.1
+langchain-core==0.2.3
+langchain-community==0.2.1
+langchain-google-genai==1.0.6
+
+# --- Pemrosesan Data & Dokumen ---
+pypdf==4.2.0
+faiss-cpu==1.8.0  # Untuk database vektor
+
+# --- Machine Learning (TensorFlow) ---
+tensorflow==2.16.1
+numpy==1.26.4
+matplotlib==3.8.4

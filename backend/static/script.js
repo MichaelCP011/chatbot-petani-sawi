@@ -1,120 +1,121 @@
-document.addEventListener("DOMContentLoaded", () => {
-    // --- ELEMEN DOM ---
-    const chatLog = document.getElementById("chat-log");
-    const fileInput = document.getElementById("file-input");
-    const uploadButton = document.getElementById("upload-button");
-    const optionsContainer = document.getElementById("options-container");
-    const API_BASE_URL = 'http://127.0.0.1:5000';
-    let currentDiseaseName = '';
+// --- ELEMEN DOM ---
+const chatLog = document.getElementById("chat-log");
+const inputArea = document.getElementById("input-area");
+const API_BASE_URL = 'http://localhost:5000';
+let currentDiseaseName = '';
 
-    // --- FUNGSI ---
+// --- FUNGSI UTAMA ---
 
-    function addMessage(text, sender) {
-        // ... (fungsi ini tidak perlu diubah)
-        const message = document.createElement("div");
-        message.classList.add("chat-message", `${sender}-message`);
-        message.innerText = text;
-        chatLog.appendChild(message);
-        chatLog.scrollTop = chatLog.scrollHeight;
-    }
+function addMessage(text, sender) {
+    const message = document.createElement("div");
+    message.classList.add("chat-message", `${sender}-message`);
+    message.innerText = text;
+    chatLog.appendChild(message);
+    chatLog.scrollTop = chatLog.scrollHeight;
+}
 
-    async function handleImageUpload() {
-        // ================== PERANGKAP DEBUGGER ==================
-        debugger; // Kode akan berhenti di sini saat DevTools terbuka
-        // ======================================================
-        
-        console.log("1. FUNGSI handleImageUpload DIMULAI.");
-        
-        const file = fileInput.files[0];
-        if (!file) {
-            console.log("Tidak ada file, proses berhenti.");
-            return;
-        }
+// --- PERBAIKAN DI FUNGSI INI ---
+function setInputArea(type, onSend, options = {}) {
+    inputArea.innerHTML = '';
+    const isDisabled = options.disabled || false;
 
-        addMessage(`Anda memilih: ${file.name}`, "user");
-        addMessage("Menganalisis gambar...", "bot");
-        uploadButton.innerText = "Memproses...";
-        uploadButton.disabled = true;
+    if (type === 'upload') {
+        const fileInput = document.createElement("input");
+        fileInput.type = "file";
+        fileInput.accept = "image/*";
+        fileInput.style.display = "none";
+        fileInput.onchange = (e) => {
+            const file = e.target.files[0];
+            if (file) onSend(file);
+        };
+        document.body.appendChild(fileInput);
 
-        const formData = new FormData();
-        formData.append('image', file);
-
-        try {
-            console.log("2. MENGIRIM request 'fetch' ke backend...");
-            const response = await fetch(`${API_BASE_URL}/api/diagnose`, {
-                method: 'POST',
-                body: formData,
-            });
-            
-            console.log("3. MENERIMA respons dari backend.", response);
-            if (!response.ok) throw new Error('Gagal diagnosis.');
-
-            const result = await response.json();
-            console.log("4. Respons JSON BERHASIL di-parse.", result);
-            
-            const { disease_name, confidence, description, handling_options } = result.data;
-            currentDiseaseName = disease_name;
-
-            const reply = `Hasil Analisis:\n- Penyakit: ${disease_name}\n- Keyakinan: ${confidence.toFixed(2)}%`;
-            addMessage(reply, "bot");
-            addMessage(description, "bot");
-
-            uploadButton.style.display = 'none';
-            displayOptions(handling_options);
-            console.log("5. SEMUA HASIL SELESAI DITAMPILKAN.");
-
-        } catch (error) {
-            console.error("TERJADI ERROR DI DALAM FETCH:", error);
-            addMessage("Maaf, terjadi kesalahan.", "bot");
-            resetToInitialState();
-        }
-    }
-
-    function displayOptions(options) {
-        // ... (fungsi ini tidak perlu diubah)
-        optionsContainer.innerHTML = '';
-        options.forEach(option => {
-            const button = document.createElement("button");
-            button.innerText = option.title;
-            button.addEventListener("click", (e) => {
-                e.preventDefault();
-                handleOptionClick(option.action, option.title);
-            });
-            optionsContainer.appendChild(button);
-        });
-    }
-
-    async function handleOptionClick(action, title) {
-        // ... (fungsi ini tidak perlu diubah)
-        addMessage(`Tanya: "${title}"`, "user");
-        addMessage("Mencari info...", "bot");
-        try {
-            const response = await fetch(`${API_BASE_URL}/api/details?disease_name=${encodeURIComponent(currentDiseaseName)}&info_type=${action}`);
-            if (!response.ok) throw new Error('Gagal mendapatkan detail.');
-            const result = await response.json();
-            addMessage(result.data.text, "bot");
-        } catch (error) {
-            console.error("Error:", error);
-            addMessage("Maaf, gagal mengambil detail.", "bot");
-        }
-    }
-
-    function resetToInitialState() {
-        // ... (fungsi ini tidak perlu diubah)
+        const uploadButton = document.createElement("button");
         uploadButton.innerText = "Pilih Gambar untuk Dianalisis";
-        uploadButton.disabled = false;
-        uploadButton.style.display = 'block';
-        optionsContainer.innerHTML = '';
-        currentDiseaseName = '';
+        uploadButton.disabled = isDisabled;
+        uploadButton.onclick = () => fileInput.click();
+        inputArea.appendChild(uploadButton);
+
+    } else if (type === 'text') {
+        const textInput = document.createElement("input");
+        textInput.type = "text";
+        textInput.placeholder = isDisabled ? "Sedang memproses..." : "Ketik pertanyaan Anda di sini...";
+        textInput.className = "text-input";
+        textInput.disabled = isDisabled;
+        textInput.onkeydown = (e) => {
+            if (e.key === 'Enter' && textInput.value.trim() !== "" && !isDisabled) {
+                onSend(textInput.value.trim());
+                textInput.value = "";
+            }
+        };
+        inputArea.appendChild(textInput);
+        if (!isDisabled) {
+            textInput.focus();
+        }
     }
+}
 
-    // --- EVENT LISTENERS ---
-    uploadButton.addEventListener("click", (e) => {
-        e.preventDefault();
-        fileInput.click();
-    });
-    fileInput.addEventListener("change", handleImageUpload);
+async function handleImageUpload(file) {
+    addMessage(`Anda memilih: ${file.name}`, "user");
+    addMessage("Menganalisis gambar dengan model CV...", "bot");
+    
+    // --- PERBAIKAN DI SINI ---
+    setInputArea('upload', handleImageUpload, { disabled: true });
 
-    // --- INISIALISASI ---
-    addMessage("Selamat datang! Silakan pilih gambar daun cabai untuk dianalisis.", "bot");
-});
+    const formData = new FormData();
+    formData.append('image', file);
+
+    try {
+        const response = await fetch(`${API_BASE_URL}/api/diagnose`, { method: 'POST', body: formData });
+        if (!response.ok) throw new Error('Gagal diagnosis.');
+        
+        const result = await response.json();
+        const { disease_name, confidence, initial_response } = result.data;
+
+        addMessage(`Hasil Diagnosis Model CV:\n- Penyakit: ${disease_name}\n- Keyakinan: ${confidence.toFixed(2)}%`, "bot");
+        addMessage(initial_response, "bot");
+        
+        // --- PERBAIKAN DI SINI ---
+        setInputArea('text', handleTextMessage, { disabled: false });
+    } catch (error) {
+        console.error(error);
+        addMessage("Maaf, terjadi kesalahan.", "bot");
+        setupInitialState();
+    }
+}
+
+async function handleTextMessage(question) {
+    addMessage(question, "user");
+    addMessage("...", "bot");
+    
+    // --- PERBAIKAN DI SINI ---
+    setInputArea('text', handleTextMessage, { disabled: true });
+
+    try {
+        const response = await fetch(`${API_BASE_URL}/api/chat`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ question: question })
+        });
+        if (!response.ok) throw new Error('Gagal mendapat respons chat.');
+
+        const result = await response.json();
+        chatLog.removeChild(chatLog.lastChild);
+        addMessage(result.data.answer, "bot");
+        
+        // --- PERBAIKAN DI SINI ---
+        setInputArea('text', handleTextMessage, { disabled: false });
+    } catch (error) {
+        console.error(error);
+        addMessage("Maaf, terjadi kesalahan.", "bot");
+        setInputArea('text', handleTextMessage, { disabled: false });
+    }
+}
+
+function setupInitialState() {
+    addMessage("Selamat datang! Silakan unggah gambar daun cabai untuk memulai diagnosis.", "bot");
+    setInputArea('upload', handleImageUpload);
+}
+
+// --- INISIALISASI ---
+setupInitialState();

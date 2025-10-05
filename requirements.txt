@@ -1,0 +1,21 @@
+# --- Framework Web & Server ---
+Flask
+Flask-Cors
+waitress
+requests
+
+# --- AI & Large Language Model (Gemini & LangChain) ---
+google-generativeai
+langchain
+langchain-core
+langchain-community
+langchain-google-genai
+
+# --- Pemrosesan Data & Dokumen ---
+pypdf
+faiss-cpu
+
+# --- Machine Learning (TensorFlow) ---
+tensorflow
+numpy
+matplotlib

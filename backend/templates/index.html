@@ -4,26 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Asisten Petani Cabai</title>
-    
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
     <div class="chat-container">
         <header>
-            <h1>Asisten Petani Cabai 🌶️</h1>
+            <h1>HotBot - Asisten Petani Cabai 🌶️</h1>
         </header>
+        <main id="chat-log" class="chat-log">
+            </main>
         
-        <main id="chat-log" class="chat-log"></main>
-
-        <footer class="input-area">
-            <input type="file" id="file-input" accept="image/*" style="display: none;">
-            
-            <button id="upload-button">Pilih Gambar untuk Dianalisis</button>
-
-            <div id="options-container"></div>
-        </footer>
+        <footer id="input-area" class="input-area">
+            </footer>
     </div>
-
-    <script src="{{ url_for('static', filename='script.js') }}"></script>
+    <script src="{{ url_for('static', filename='script.js') }}" defer></script>
 </body>
 </html>
