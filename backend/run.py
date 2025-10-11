@@ -15,5 +15,7 @@ app.register_blueprint(api_blueprint)
 
 # Menjalankan Aplikasi
 if __name__ == "__main__":
-    print("[*] Menjalankan server Flask dengan Waitress di http://localhost:5000")
-    serve(app, host="0.0.0.0", port=5000)
+    # Ambil port dari environment variable Azure, atau gunakan 5000 jika berjalan lokal
+    port = int(os.environ.get("PORT", 5000))
+    print(f"[*] Menjalankan server di host 0.0.0.0 port {port}")
+    serve(app, host="0.0.0.0", port=port)
