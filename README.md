@@ -64,5 +64,58 @@ Berikut adalah panduan untuk menjalankan proyek ini di lingkungan lokal.
 #### 1. Clone Repository
 
 ```bash
-git clone https://github.com/URL-repository-Anda/nama-repo.git
+git clone https://github.com/MichaelCP011/hotbot-ai-assistance-chili-farmer.git
 cd nama-repo
+```
+#### 2. Buat Virtual Envirotment
+
+```bash
+python -m venv venv
+```
+
+#### 3. Aktifkan Virtual Environment
+
+```bash
+# Windows (PowerShell)
+.\venv\Scripts\activate
+
+# macOS / Linux
+source venv/bin/activate
+```
+
+#### 4. Install Semua Library
+
+```bash
+pip install -r requirements.txt
+```
+
+#### 5. Konfigurasi API Key
+
+```bash
+$env:GOOGLE_API_KEY="API_KEY_ANDA"
+```
+
+### Langkah-langkah Menjalankan Aplikasi
+
+#### 1. Proses Knowledge Base (Hanya dilakukan sekali)
+
+Pastikan Anda sudah meletakkan semua file .pdf jurnal di dalam folder `backend/knowledge_base/journals/.` Kemudian, jalankan skrip berikut dari direktori utama:
+
+```bash
+python backend/utils/knowledge_processor.py
+```
+Tunggu hingga proses selesai dan folder `vector_store` berhasil dibuat.
+
+#### 2. Jalankan Server Utama
+
+Setelah database vektor siap, jalankan aplikasi utama dari **direktori utama:**
+```bash
+python backend/run.py
+```
+Server akan berjalan di `http://localhost:5000.`
+
+#### 3. Akses Aplikasi
+
+Buka web browser Anda dan kunjungi alamat:
+`http://localhost:5000`
+Aplikasi chatbot Anda kini siap digunakan.
