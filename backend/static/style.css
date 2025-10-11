@@ -103,3 +103,19 @@ header {
     background-color: #ccc;
     cursor: not-allowed;
 }
+
+/* Tambahkan di akhir file style.css */
+
+.chat-image {
+    max-width: 100%;
+    border-radius: 8px;
+    margin-top: 5px;
+}
+
+.text-input {
+    width: 100%;
+    padding: 12px;
+    border-radius: 25px;
+    border: 1px solid #ccc;
+    font-size: 1rem;
+}
