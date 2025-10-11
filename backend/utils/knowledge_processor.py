@@ -19,9 +19,9 @@ except Exception as e:
 
 # --- Definisikan Path ---
 # Path ke folder berisi jurnal PDF Anda
-JOURNALS_PATH = "knowledge_base/journals"
+JOURNALS_PATH = "backend/knowledge_base/journals"
 # Path untuk menyimpan database vektor
-VECTOR_STORE_PATH = "knowledge_base/vector_store"
+VECTOR_STORE_PATH = "backend/knowledge_base/vector_store"
 
 
 def process_knowledge_base():

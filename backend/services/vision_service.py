@@ -5,7 +5,7 @@ from tensorflow.keras.preprocessing import image
 import numpy as np
 
 # --- Konfigurasi Model CV ---
-MODEL_PATH = 'chili_disease_model_final.keras'
+MODEL_PATH = 'backend/chili_disease_model_final.keras'
 CLASS_NAMES = ['healthy', 'leaf curl', 'leaf spot', 'whitefly', 'yellowish']
 IMAGE_SIZE = (224, 224)
 

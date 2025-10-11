@@ -17,7 +17,7 @@ except Exception as e:
     exit()
 
 # --- Definisikan Path ---
-VECTOR_STORE_PATH = "knowledge_base/vector_store"
+VECTOR_STORE_PATH = "backend/knowledge_base/vector_store"
 
 # --- Fungsi untuk Inisialisasi RAG Chain ---
 def create_rag_chain():
