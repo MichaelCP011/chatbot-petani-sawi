@@ -1,6 +1,7 @@
 # Chatbot Diagnosis Penyakit Tanaman Cabai 🌶️
 
 Sebuah aplikasi web berbasis AI yang berfungsi sebagai asisten virtual bagi petani untuk mendiagnosis penyakit pada tanaman cabai. Aplikasi ini menggunakan model Computer Vision untuk identifikasi awal melalui gambar dan didukung oleh Large Language Model (Google Gemini) untuk sesi tanya jawab yang dinamis dan informatif berdasarkan knowledge base dari jurnal ilmiah.
+<img width="899" height="856" alt="image" src="https://github.com/user-attachments/assets/90007c56-89a9-49d9-a0c2-fae622775df3" />
 
 ---
 
@@ -116,6 +117,7 @@ Server akan berjalan di `http://localhost:5000.`
 
 #### 3. Akses Aplikasi
 
-Buka web browser Anda dan kunjungi alamat:
+Buka web browser Anda dan kunjungi alamat
 `http://localhost:5000`
 Aplikasi chatbot Anda kini siap digunakan.
+
